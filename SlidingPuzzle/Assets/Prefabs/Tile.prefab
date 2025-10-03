@@ -91,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _numericText: {fileID: 1351826318174464205}
   _numericImage: {fileID: 4315820758987395225}
+  _rectTransform: {fileID: 1827249992598638214}
 --- !u!1 &5717957582872647689
 GameObject:
   m_ObjectHideFlags: 0

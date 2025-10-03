@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
+    public Vector3 EmptyTilePosition { get; set; }
+
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private RectTransform _tilesParent;
 
     private Vector2Int _puzzleSize = new Vector2Int(4, 4);
     private List<Tile> _tileList = new();
+    private float _neighborTileDistance = 102.0f;
 
-    private void Awake()
+    private IEnumerator Start()
     {
         SpawnTiles();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_tilesParent);
+
+        yield return new WaitForEndOfFrame();
+        _tileList.ForEach(x => x.SetCorrectPosition());
+
         StartCoroutine(nameof(OnSuffle));
     }
 
@@ -24,7 +34,7 @@ public class Board : MonoBehaviour
             {
                 Tile tile = Instantiate(_tilePrefab, _tilesParent);
                 _tileList.Add(tile);
-                tile.Setup(_puzzleSize.x * _puzzleSize.y, y * _puzzleSize.x + x + 1);
+                tile.Setup(this, _puzzleSize.x * _puzzleSize.y, y * _puzzleSize.x + x + 1);
             }
         }
     }
@@ -44,6 +54,18 @@ public class Board : MonoBehaviour
             _tileList[index].transform.SetAsLastSibling();
 
             yield return null;
+        }
+
+        EmptyTilePosition = _tileList[_tileList.Count - 1].LocalPosition;
+    }
+
+    public void IsMoveTile(Tile tile)
+    {
+        if (Vector3.Distance(EmptyTilePosition, tile.LocalPosition) == _neighborTileDistance)
+        {
+            Vector3 goalPosition = EmptyTilePosition;
+            EmptyTilePosition = tile.LocalPosition;
+            tile.OnMoveTo(goalPosition);
         }
     }
 }
