@@ -6,9 +6,12 @@ using UnityEngine.UI;
 public class Board : MonoBehaviour
 {
     public Vector3 EmptyTilePosition { get; set; }
+    public int PlayTime { get; private set; }
+    public int MoveCount { get; private set; }
 
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private RectTransform _tilesParent;
+    [SerializeField] private UIController _uiContoller;
 
     private Vector2Int _puzzleSize = new Vector2Int(4, 4);
     private List<Tile> _tileList = new();
@@ -24,6 +27,7 @@ public class Board : MonoBehaviour
         _tileList.ForEach(x => x.SetCorrectPosition());
 
         StartCoroutine(nameof(OnSuffle));
+        StartCoroutine(nameof(CalculatePlayTime));
     }
 
     private void SpawnTiles()
@@ -66,6 +70,7 @@ public class Board : MonoBehaviour
             Vector3 goalPosition = EmptyTilePosition;
             EmptyTilePosition = tile.LocalPosition;
             tile.OnMoveTo(goalPosition);
+            MoveCount++;
         }
     }
 
@@ -74,7 +79,17 @@ public class Board : MonoBehaviour
         List<Tile> tiles = _tileList.FindAll(x => x.IsCorrected);
         if (tiles.Count == _puzzleSize.x * _puzzleSize.y - 1)
         {
-            Debug.Log("GameClear");
+            StopCoroutine(nameof(CalculatePlayTime));
+            _uiContoller.OnResultPanel();
+        }
+    }
+
+    public IEnumerator CalculatePlayTime()
+    {
+        while (true)
+        {
+            PlayTime++;
+            yield return new WaitForSeconds(1);
         }
     }
 }
