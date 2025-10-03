@@ -68,4 +68,13 @@ public class Board : MonoBehaviour
             tile.OnMoveTo(goalPosition);
         }
     }
+
+    public void IsGameOver()
+    {
+        List<Tile> tiles = _tileList.FindAll(x => x.IsCorrected);
+        if (tiles.Count == _puzzleSize.x * _puzzleSize.y - 1)
+        {
+            Debug.Log("GameClear");
+        }
+    }
 }

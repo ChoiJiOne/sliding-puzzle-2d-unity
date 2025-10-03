@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         }
     }
     public Vector3 LocalPosition => _rectTransform.localPosition;
+    public bool IsCorrected { private set; get; }
 
     [SerializeField] private TextMeshProUGUI _numericText;
     [SerializeField] private Image _numericImage;
@@ -44,7 +45,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"CLICK:{_numeric}");
         _board.IsMoveTile(this);
     }
 
@@ -69,5 +69,9 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
             yield return null;
         }
+
+        IsCorrected = (_correctPosition == _rectTransform.localPosition);
+
+        _board.IsGameOver();
     }
 }
