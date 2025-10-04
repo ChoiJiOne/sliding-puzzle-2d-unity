@@ -724,7 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 8232441740774478597, guid: 0c9cf66b052248f43bf68e5c3067861b, type: 3}
   _tilesParent: {fileID: 1323090010}
-  _uiContoller: {fileID: 0}
+  _uiContoller: {fileID: 1323090015}
 --- !u!114 &1323090015
 MonoBehaviour:
   m_ObjectHideFlags: 0
