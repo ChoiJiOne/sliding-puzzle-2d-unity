@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BoardView : MonoBehaviour
@@ -10,11 +11,16 @@ public class BoardView : MonoBehaviour
     [SerializeField, Range(3, 6)] private int _rowSize;
     [SerializeField, Range(3, 6)] private int _colSize;
 
+    private List<NumberSlotView> _numberSlotViewList = new();
+    
     private void Awake()
     {
-        for (int count = 0; count < _rowSize * _colSize - 1; ++count)
+        int count = _rowSize * _colSize;
+        for (int number = 1; number <= count; ++number)
         {
-            Instantiate(_numberSlotViewPrefab, _rectTransform);
+            var numberSlotView = Instantiate(_numberSlotViewPrefab, _rectTransform);
+            numberSlotView.Bind(number, count);
+            _numberSlotViewList.Add(numberSlotView);
         }
     }
     
