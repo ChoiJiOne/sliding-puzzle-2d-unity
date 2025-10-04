@@ -7,6 +7,4 @@ public class NumberSlotView : MonoBehaviour
     [SerializeField] private RectTransform _rectTransform;
 
     private int _number = 0;
-
-
 }

@@ -5,9 +5,19 @@ public class BoardView : MonoBehaviour
 {
     [SerializeField] private GridLayoutGroup _gridLayoutGroup;
     [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private NumberSlotView _numberSlotViewPrefab;
+
     [SerializeField, Range(3, 6)] private int _rowSize;
     [SerializeField, Range(3, 6)] private int _colSize;
 
+    private void Awake()
+    {
+        for (int count = 0; count < _rowSize * _colSize - 1; ++count)
+        {
+            Instantiate(_numberSlotViewPrefab, _rectTransform);
+        }
+    }
+    
 #if UNITY_EDITOR
     private void OnValidate()
     {
